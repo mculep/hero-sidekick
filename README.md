@@ -82,16 +82,15 @@ module.exports = {
     "dialect": "postgres"
 
     ```js
-
     -   touch .env
     -   add below to .env
 
+    ```
     ```js
     DB_USER=
     DB_PASSWORD=
     DB_NAME=
     DB_HOST=
-
     ````
 
     -   put in `process.env` variables
