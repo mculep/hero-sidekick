@@ -19,7 +19,31 @@ npm i express morgan express-es6-template-engine sequelize pg pg-hstore dotenv
 touch index.js
 ```
 
+### Bring in all the require and other stuff needed
+
+```js
+const http = require("http");
+const express = require("express");
+const morgan = require("morgan");
+
+const PORT = 3000;
+const app = express();
+const server = http.createServer(app);
+const logger = morgan("dev");
+
+app.use(express.urlencoded({ extended: true }));
+app.use(logger);
+
+server.listen(PORT, () => {
+    console.log(`yeeehaaa`);
+});
+```
+
 ### Add `dev` script to `package.json`
+
+```sh
+"dev": "nodemon index.js",
+```
 
 ## Sequelize setup
 
@@ -27,13 +51,31 @@ touch index.js
 
 -   if there is an example env file (usually named `dist.env`), make a copy and name it `.env`
 -   `echo ".env" >> .gitignore`
--   `touch .sequelizerc` (or copy from another project!)
+-   `touch .sequelizerc` (copy and paste below and save)
+
+```sh
+'use strict';
+
+require('dotenv').config();    // don't forget to require dotenv
+const path = require('path');
+
+module.exports = {
+  'config': path.resolve('config', 'config.js'),
+  'models-path': path.resolve('models'),
+  'seeders-path': path.resolve('seeders'),
+  'migrations-path': path.resolve('migrations'),
+};
+```
+
+-   `npm install dotenv`
 -   `npx sequelize init`
--   fill out our `config/config.js`
-    -   add `require('dotenv').config()` at top
-    -   add a `module.exports = `
+    -   add `require('dotenv').config();` at top of `models/index.js` & `config.js` file
+    -   add a `module.exports = {` to config.js above development
+    -   add `"username": process.env.DB_NAME, "password": process.env.DB_PASSWORD, "database": process.env.DB_NAME, "host": process.env.DB_HOST, "dialect": "postgres"` to config.js
+    -   touch .env
+    -   add `DB_USER= DB_PASSWORD= DB_NAME= DB_HOST=`
     -   put in `process.env` variables
-    -   change dialect to `'postgres'`
+    -   change dialect to `'postgres'` in config/config.js
 -   `touch .env`
     -   put real credentials in `.env` file
 -   add `require('dotenv').config()` at top of `models/index.js`
@@ -149,6 +191,41 @@ When calling `queryInterface.bulkInsert()`, pass it three args:
 1. the name of the table
 2. an array of objects
 3. an empty options object
+
+-   for the up async
+
+```js
+module.exports = {
+  up: async (queryInterface, Sequelize) => {
+      return await queryInterface.bulkInsert("Heroes", [
+        {
+          name: "Wonder Woman",
+          createdAt: new Date(),
+          updatedAt: new Date()
+        },
+        {
+          name: "Harley Quinn",
+          createdAt: new Date(),
+          updatedAt: new Date()
+        },
+        {
+          name: "Spider-man",
+          createdAt: new Date(),
+          updatedAt: new Date()
+        },
+      ],
+    );
+  },
+```
+
+-   for the down async
+
+```js
+down: async (queryInterface, Sequelize) => {
+    return await queryInterface.bulkDelete('Heroes');
+  }
+};
+```
 
 When calling `queryInterface.bulkDelete()`, pass it one arg:
 
