@@ -51,7 +51,7 @@ server.listen(PORT, () => {
 
 -   if there is an example env file (usually named `dist.env`), make a copy and name it `.env`
 -   `echo ".env" >> .gitignore`
--   `touch .sequelizerc` (copy and paste below and save)
+-   `touch .sequelizerc` (copy and paste in your sequelize file below and save)
 
 ```sh
 'use strict';
@@ -69,13 +69,34 @@ module.exports = {
 
 -   `npm install dotenv`
 -   `npx sequelize init`
+
     -   add `require('dotenv').config();` at top of `models/index.js` & `config.js` file
     -   add a `module.exports = {` to config.js above development
-    -   add `"username": process.env.DB_NAME, "password": process.env.DB_PASSWORD, "database": process.env.DB_NAME, "host": process.env.DB_HOST, "dialect": "postgres"` to config.js
+    -   add code below to config.js
+
+    ````js
+    "username": process.env.DB_NAME,
+    "password": process.env.DB_PASSWORD,
+    "database": process.env.DB_NAME,
+    "host": process.env.DB_HOST,
+    "dialect": "postgres"
+
+    ```js
+
     -   touch .env
-    -   add `DB_USER= DB_PASSWORD= DB_NAME= DB_HOST=`
+    -   add below to .env
+
+    ```js
+    DB_USER=
+    DB_PASSWORD=
+    DB_NAME=
+    DB_HOST=
+
+    ````
+
     -   put in `process.env` variables
     -   change dialect to `'postgres'` in config/config.js
+
 -   `touch .env`
     -   put real credentials in `.env` file
 -   add `require('dotenv').config()` at top of `models/index.js`
