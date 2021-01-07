@@ -14,7 +14,6 @@ module.exports = (sequelize, DataTypes) => {
         Sidekick.belongsTo(models.Hero, {
           foreignKey: "heroId"
         });
-      }
     }
   };
   Sidekick.init({
