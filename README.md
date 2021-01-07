@@ -74,7 +74,7 @@ module.exports = {
     -   add a `module.exports = {` to config.js above development
     -   add code below to config.js
 
-    ````js
+    ```js
     "username": process.env.DB_NAME,
     "password": process.env.DB_PASSWORD,
     "database": process.env.DB_NAME,
@@ -92,7 +92,7 @@ module.exports = {
     DB_PASSWORD=
     DB_NAME=
     DB_HOST=
-    ````
+    ```
 
     -   put in `process.env` variables
     -   change dialect to `'postgres'` in config/config.js
