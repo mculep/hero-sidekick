@@ -31,6 +31,11 @@ const app = express();
 const server = http.createServer(app);
 const logger = morgan("dev");
 
+const es6Renderer = require("express-es6-template-engine");
+app.engine("html", es6Renderer);
+app.set("views", "templates");
+app.set("view engine", "html");
+
 app.use(express.urlencoded({ extended: true }));
 app.use(logger);
 
