@@ -22,6 +22,7 @@ const { layout } = require("./utils");
 
 app.get('/list', async (req, res) => {
     const heroes = await Hero.findAll({
+        include: Sidekick,
         order:[
             ['name', 'asc']
         ]
@@ -46,7 +47,7 @@ app.get('/hero/:id/sidekick', async (req, res) => {
     const sidekicks = await Sidekick.findAll({
         where: {
             heroId: {
-                [Op.eq]: null
+                [Op.eq]: null // op contains comparison operators
             }
         },
         order: [
