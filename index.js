@@ -11,9 +11,10 @@ app.engine('html', es6Renderer);
 app.set('views', 'templates');
 app.set('view engine', 'html');
 
-app.use(express.urlencoded({extended: true}));
 app.use(logger);
 
+app.use(express.urlencoded({extended: true}));
+const { Op } = require('sequelize')
 const { Hero, Sidekick } = require('./models');
 const { layout } = require("./utils");
 
@@ -39,14 +40,19 @@ app.get('/list', async (req, res) => {
 
 // LIST OF SIDEKICKS
 
-app.get('/hero/:id/sidekick', async (req, res) =>{
+app.get('/hero/:id/sidekick', async (req, res) => {
     const { id } = req.params;
     const hero = await Hero.findByPk(id)
     const sidekicks = await Sidekick.findAll({
+        where: {
+            heroId: {
+                [Op.eq]: null
+            }
+        },
         order: [
             ['name', 'asc']
         ]
-    })
+    });
     console.log(JSON.stringify(sidekicks, null, 4));
     res.render('form', {
         locals: {
@@ -54,16 +60,26 @@ app.get('/hero/:id/sidekick', async (req, res) =>{
             sidekicks
         },
         ...layout
-    })
+    });
 });
 
 
-app.get("/", (req, res) =>{
-    res.send(`<h1>Hello World!!!</h1>`)
-})
+app.post('/hero/:id/sidekick', async (req, res) => {
+    const { id } = req.params;
+    const { sidekickId } = req.body
+    const hero = await Hero.findByPk(id);
+    await hero.setSidekick(sidekickId);
+    await hero.save();
+    res.redirect('/list'); 
+});
 
+// HOME 
+
+app.get("/", (req, res) => {
+    res.send(`<h1>Hello World!!!</h1>`);
+});
 
 
 server.listen(PORT, () => {
-    console.log(`yeeehaaa`)
+    console.log('Yesssahhh');
 });
